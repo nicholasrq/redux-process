@@ -7,7 +7,7 @@ It's a tool to organize your reducers and action creators.
 
 # Why yet another tool
 
-We used to organize our action creators and reducers in separate files, but on large scale apps this approach doesn't work very well. Tons of separate files and constants with actions names brings bunch of pain for developes. Approach of Processor is to merge all of these files.
+We used to organize our action creators and reducers in separate files, but on large scale apps this approach doesn't work very well. Tons of separate files and constants with action names brings bunch of pain for developes. Approach of Processor is to merge all of these files.
 
 Reducers in Processor are separated by state chunks and it allows you to store initial state, action creators and reducers all together.
 
@@ -16,7 +16,13 @@ Reducers in Processor are separated by state chunks and it allows you to store i
 Simple as hell
 
 ```
-npm install redux-processor
+npm install redux-processor -s
+```
+
+or, if you're familiar with Yarn
+
+```
+yarn add redux-processor
 ```
 
 # How to
