@@ -5,6 +5,8 @@
 
 It's a tool to organize your reducers and action creators.
 
+**This module ships ES6 code, so be sure that you're using tools like Babel or your target browsers supports ES6 natively.**
+
 # Why yet another tool
 
 We used to organize our action creators and reducers in separate files, but on large scale apps this approach doesn't work very well. Tons of separate files and constants with action names brings bunch of pain for developes. Approach of Processor is to merge all of these files.
