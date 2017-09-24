@@ -23,13 +23,12 @@ const createTestStore = function(){
     setBoth: {
       type: "SET_BOTH",
       process(state, payload){
-        console.log(payload)
         const [foo, bar] = payload
         return Object.assign({}, state, {foo, bar})
       }
     },
     setBothWithAction: {
-      type: "SET_BOTH",
+      type: "SET_BOTH_ACT",
       action(foo, bar){
         return { foo, bar }
       },
