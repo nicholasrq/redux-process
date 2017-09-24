@@ -6,20 +6,48 @@ const initialState = {
   bar: "bar"
 }
 
-const createTestStore = function(){
-  const preducers = processor(initialState, {
+const createTestStore = function(setup = {}){
+  const preducers = processor(initialState, setup);
+  const store = createStore(preducers.reducer);
+  return {store, actions: preducers.wrap(store)}
+}
+
+test('regular actions dispatch', function(){
+  const {store} = createTestStore({
     setFoo: {
       type: "SET_FOO",
       process(state, foo){
         return Object.assign({}, state, {foo})
       }
-    },
-    setBar: {
-      type: "SET_BAR",
-      process(state, bar){
-        return Object.assign({}, state, {bar})
+    }
+  });
+  store.dispatch({ type: "SET_FOO", payload: "hello" });
+
+  expect(store.getState()).toEqual({
+    foo: "hello",
+    bar: "bar"
+  });
+});
+
+test('named actions dispatch', function(){
+  const {store, actions} = createTestStore({
+    setFoo: {
+      type: "SET_FOO",
+      process(state, foo){
+        return Object.assign({}, state, {foo})
       }
-    },
+    }
+  });
+  actions.setFoo("hello");
+
+  expect(store.getState()).toEqual({
+    foo: "hello",
+    bar: "bar"
+  });
+});
+
+test('named actions dispatch with multiple arguments', function(){
+  const {store, actions} = createTestStore({
     setBoth: {
       type: "SET_BOTH",
       process(state, payload){
@@ -27,6 +55,17 @@ const createTestStore = function(){
         return Object.assign({}, state, {foo, bar})
       }
     },
+  });
+  actions.setBoth("hello", "world");
+
+  expect(store.getState()).toEqual({
+    foo: "hello",
+    bar: "world"
+  });
+});
+
+test('named actions dispatch with multiple arguments and action creator', function(){
+  const {store, actions} = createTestStore({
     setBothWithAction: {
       type: "SET_BOTH_ACT",
       action(foo, bar){
@@ -37,43 +76,6 @@ const createTestStore = function(){
       }
     }
   });
-
-  const store = createStore(preducers.reducer);
-  return {store, actions: preducers.wrap(store)}
-}
-
-test('regular actions dispatch', function(){
-  const {store} = createTestStore();
-  store.dispatch({ type: "SET_FOO", payload: "hello" });
-
-  expect(store.getState()).toEqual({
-    foo: "hello",
-    bar: "bar"
-  });
-});
-
-test('named actions dispatch', function(){
-  const {store, actions} = createTestStore();
-  actions.setFoo("hello");
-
-  expect(store.getState()).toEqual({
-    foo: "hello",
-    bar: "bar"
-  });
-});
-
-test('named actions dispatch with multiple arguments', function(){
-  const {store, actions} = createTestStore();
-  actions.setBoth("hello", "world");
-
-  expect(store.getState()).toEqual({
-    foo: "hello",
-    bar: "world"
-  });
-});
-
-test('named actions dispatch with multiple arguments and action creator', function(){
-  const {store, actions} = createTestStore();
   actions.setBothWithAction("hello", "world");
 
   expect(store.getState()).toEqual({
