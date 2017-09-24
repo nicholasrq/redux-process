@@ -7,13 +7,19 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "yarn test -- --watch",
+    "test:cov": "yarn test -- --coverage"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nicholasrq/redux-process.git"
   },
-  "keywords": ["redux", "store", "react"],
+  "keywords": [
+    "redux",
+    "store",
+    "react"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -22,5 +28,11 @@
   "homepage": "https://github.com/nicholasrq/redux-process#readme",
   "peerDependencies": {
     "redux": "3.x"
+  },
+  "devDependencies": {
+    "jest": "^21.1.0"
+  },
+  "dependencies": {
+    "redux": "^3.7.2"
   }
 }
