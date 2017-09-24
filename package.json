@@ -1,0 +1,26 @@
+{
+  "name": "redux-process",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nicholasrq/redux-process.git"
+  },
+  "keywords": ["redux", "store", "react"],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nicholasrq/redux-process/issues"
+  },
+  "homepage": "https://github.com/nicholasrq/redux-process#readme",
+  "peerDependencies": {
+    "redux": "3.x"
+  }
+}
