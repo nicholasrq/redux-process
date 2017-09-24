@@ -1,11 +1,11 @@
 # Redux-Processor
 
-[![Build Status](https://travis-ci.org/nicholasrq/redux-process.svg?branch=master)](https://travis-ci.org/nicholasrq/redux-process)
-[![codecov](https://codecov.io/gh/nicholasrq/redux-process/branch/master/graph/badge.svg)](https://codecov.io/gh/nicholasrq/redux-process)
-
 It's a tool to organize your reducers and action creators.
 
 **This module ships ES6 code, so be sure that you're using tools like Babel or your target browsers supports ES6 natively.**
+
+[![Build Status](https://travis-ci.org/nicholasrq/redux-process.svg?branch=master)](https://travis-ci.org/nicholasrq/redux-process)
+[![codecov](https://codecov.io/gh/nicholasrq/redux-process/branch/master/graph/badge.svg)](https://codecov.io/gh/nicholasrq/redux-process)
 
 # Why yet another tool
 
