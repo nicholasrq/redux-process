@@ -355,3 +355,11 @@ actions.user.setSurname("Cage");
 actions.todos.add("First todo");
 actions.todos.add("Second todo");
 ```
+
+# Contribution
+
+Feel free to fork and create PRs.
+
+# License
+
+MIT

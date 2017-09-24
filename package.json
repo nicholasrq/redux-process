@@ -1,5 +1,5 @@
 {
-  "name": "redux-process",
+  "name": "redux-processor",
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
@@ -13,26 +13,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nicholasrq/redux-process.git"
+    "url": "git+https://github.com/nicholasrq/redux-processor.git"
   },
   "keywords": [
     "redux",
     "store",
     "react"
   ],
-  "author": "",
-  "license": "ISC",
+  "author": "Skriabin Nikita",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/nicholasrq/redux-process/issues"
   },
-  "homepage": "https://github.com/nicholasrq/redux-process#readme",
+  "homepage": "https://github.com/nicholasrq/redux-processor#readme",
   "peerDependencies": {
     "redux": "3.x"
   },
   "devDependencies": {
     "jest": "^21.1.0"
-  },
-  "dependencies": {
-    "redux": "^3.7.2"
   }
 }
