@@ -20,6 +20,23 @@ const createTestStore = function(){
         return Object.assign({}, state, {bar})
       }
     },
+    setBoth: {
+      type: "SET_BOTH",
+      process(state, payload){
+        console.log(payload)
+        const [foo, bar] = payload
+        return Object.assign({}, state, {foo, bar})
+      }
+    },
+    setBothWithAction: {
+      type: "SET_BOTH",
+      action(foo, bar){
+        return { foo, bar }
+      },
+      process(state, payload){
+        return Object.assign({}, state, payload)
+      }
+    }
   });
 
   const store = createStore(preducers.reducer);
@@ -34,7 +51,7 @@ test('regular actions dispatch', function(){
     foo: "hello",
     bar: "bar"
   });
-})
+});
 
 test('named actions dispatch', function(){
   const {store, actions} = createTestStore();
@@ -44,7 +61,27 @@ test('named actions dispatch', function(){
     foo: "hello",
     bar: "bar"
   });
-})
+});
+
+test('named actions dispatch with multiple arguments', function(){
+  const {store, actions} = createTestStore();
+  actions.setBoth("hello", "world");
+
+  expect(store.getState()).toEqual({
+    foo: "hello",
+    bar: "world"
+  });
+});
+
+test('named actions dispatch with multiple arguments and action creator', function(){
+  const {store, actions} = createTestStore();
+  actions.setBothWithAction("hello", "world");
+
+  expect(store.getState()).toEqual({
+    foo: "hello",
+    bar: "world"
+  });
+});
 
 test('unknown action dispatch', function(){
   const {store, actions} = createTestStore();
@@ -54,4 +91,4 @@ test('unknown action dispatch', function(){
     foo: "foo",
     bar: "bar"
   });
-})
+});

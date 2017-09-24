@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "yarn test -- --watch",
-    "test:cov": "yarn test -- --coverage"
+    "test:cov": "yarn test -- --coverage && codecov"
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/nicholasrq/redux-process.svg?branch=master)](https://travis-ci.org/nicholasrq/redux-process)
+
 # Redux-Processor
 
 It's a tool to organize your reducers and action creators.
