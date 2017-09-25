@@ -37,13 +37,49 @@ Processor itself provides two functions to create state chunks:
 
 `processorMulti(multiActions[, initialState])` – for those, who's familiar with `combineReducers`
 
+## Importing
+
+Both ES6 modules and CommonJS styles are supported, so you're free to choose you preferred way to import Processor:
+
+### ES6 style
+
+```javascript
+import { processor } from 'redux-processor'
+import { multi } from 'redux-processor'
+
+/* OR */
+
+import { multi as processor } from 'redux-processor'
+
+/* OR */
+
+import processor from 'redux-processor/lib/processor'
+import multi from 'redux-processor/lib/multi'
+```
+
+### CommonJS style
+
+```javascript
+const processor = require('redux-processor').processor
+const multi = require('redux-processor').multi
+
+/* OR */
+
+const { processor } = require('redux-processor')
+
+/* OR */
+
+const processor = require('redux-processor/lib/processor');
+const multi = require('redux-processor/lib/multi');
+```
+
 ## Basics
 
 Simple example of how to use processor within your application:
 
 ```javascript
-import {createStore} from 'redux';
-import processor from  'redux-processor';
+import { createStore }  from 'redux';
+import { processor }    from  'redux-processor';
 
 const initialState = {
   count: 1
@@ -210,8 +246,8 @@ store.setFilter("COMPLETED") //=> Filter: COMPLETED
 You may be familiar with redux's `combineReducers` function. Processor has its own alternative to provide such functionality. Let's say you have two scopes in your state: `user` and `todos`. To separate reducers for these scopes you can use `multiProcessor` function.
 
 ```javascript
-import {createStore} from 'redux';
-import {multi as processor} from  'redux-processor';
+import { createStore }        from 'redux';
+import { multi as processor } from 'redux-processor';
 
 const initialState = {
   user: {
@@ -260,8 +296,8 @@ actions.todos.add("Second todo");
 You may want to define initial state and structure for each reducer individually. Next example works just like the previous one, but initial states are separated now. Resulting state is a combination of states returned by individual state chunks:
 
 ```javascript
-import {createStore} from 'redux';
-import {multi as processor} from  'redux-processor';
+import { createStore }        from 'redux';
+import { multi as processor } from 'redux-processor';
 
 const mpreducers = processor({
   user: {
@@ -346,8 +382,8 @@ module.exports.add = {
 `app.js`
 
 ```javascript
-import {createStore} from 'redux';
-import {multi as processor} from  'redux-processor';
+import { createStore }        from 'redux';
+import { multi as processor } from 'redux-processor';
 
 const mpreducers = processor({
   user: require('reducers/user_reducer.js'),

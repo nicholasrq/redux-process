@@ -2,7 +2,7 @@
   "name": "redux-processor",
   "version": "1.0.6",
   "description": "",
-  "main": "lib/index.js",
+  "main": "lib/",
   "directories": {
     "test": "test"
   },
