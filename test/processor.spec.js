@@ -1,14 +1,21 @@
-const {createStore} = require('redux');
+const {createStore, applyMiddleware} = require('redux');
+const thunk = require('redux-thunk').default;
 const processor = require('../lib/processor');
+const { createLogger } = require('redux-logger')
 
 const initialState = {
   foo: "foo",
   bar: "bar"
 }
 
+const middleware = [
+  thunk,
+  // createLogger({colors: false})
+]
+
 const createTestStore = function(setup = {}){
   const preducers = processor(initialState, setup);
-  const store = createStore(preducers.reducer);
+  const store = createStore(preducers.reducer, applyMiddleware(...middleware));
   return {store, actions: preducers.wrap(store)}
 }
 
@@ -21,12 +28,16 @@ test('regular actions dispatch', function(){
       }
     }
   });
-  store.dispatch({ type: "SET_FOO", payload: "hello" });
 
-  expect(store.getState()).toEqual({
-    foo: "hello",
-    bar: "bar"
-  });
+  const unsubscribe = store.subscribe(() => {
+    expect(store.getState()).toEqual({
+      foo: "hello",
+      bar: "bar"
+    });
+    unsubscribe();
+  })
+
+  store.dispatch({ type: "SET_FOO", payload: "hello" });
 });
 
 test('named actions dispatch', function(){
@@ -38,12 +49,17 @@ test('named actions dispatch', function(){
       }
     }
   });
+
+  const unsubscribe = store.subscribe(() => {
+    expect(store.getState()).toEqual({
+      foo: "hello",
+      bar: "bar"
+    });
+    unsubscribe();
+  });
+
   actions.setFoo("hello");
 
-  expect(store.getState()).toEqual({
-    foo: "hello",
-    bar: "bar"
-  });
 });
 
 test('named actions dispatch with multiple arguments', function(){
@@ -56,12 +72,16 @@ test('named actions dispatch with multiple arguments', function(){
       }
     },
   });
-  actions.setBoth("hello", "world");
 
-  expect(store.getState()).toEqual({
-    foo: "hello",
-    bar: "world"
+  const unsubscribe = store.subscribe(() => {
+    expect(store.getState()).toEqual({
+      foo: "hello",
+      bar: "world"
+    });
+    unsubscribe();
   });
+
+  actions.setBoth("hello", "world");
 });
 
 test('named actions dispatch with multiple arguments and action creator', function(){
@@ -76,20 +96,98 @@ test('named actions dispatch with multiple arguments and action creator', functi
       }
     }
   });
-  actions.setBothWithAction("hello", "world");
 
-  expect(store.getState()).toEqual({
-    foo: "hello",
-    bar: "world"
+  const unsubscribe = store.subscribe(() => {
+    expect(store.getState()).toEqual({
+      foo: "hello",
+      bar: "world"
+    });
+    unsubscribe();
   });
+
+  actions.setBothWithAction("hello", "world");
 });
 
 test('unknown action dispatch', function(){
   const {store, actions} = createTestStore();
-  store.dispatch({ type: "UNKNOWN_ACTION", payload: { a: 1, b: 2 } });
 
-  expect(store.getState()).toEqual({
-    foo: "foo",
-    bar: "bar"
+  const unsubscribe = store.subscribe(() => {
+    expect(store.getState()).toEqual({
+      foo: "foo",
+      bar: "bar"
+    });
+    unsubscribe();
   });
+
+  store.dispatch({ type: "UNKNOWN_ACTION", payload: { a: 1, b: 2 } });
+});
+
+test('before action', function(){
+  const {store, actions} = createTestStore({
+    setBothWithAction: {
+      type: "SET_BOTH_ACT",
+      before(state){
+        return { foo: "bar" }
+      },
+      action(foo, bar){
+        return { foo, bar }
+      },
+      process(state, payload, type){
+        return Object.assign({}, state, payload)
+      }
+    }
+  });
+
+  let unsubscribe = store.subscribe(() => {
+    expect(store.getState()).toEqual({
+      foo: "bar",
+      bar: "bar"
+    });
+    unsubscribe();
+
+    unsubscribe = store.subscribe(() => {
+      expect(store.getState()).toEqual({
+        foo: "hello",
+        bar: "world"
+      });
+      unsubscribe();
+    });
+  });
+
+  actions.setBothWithAction("hello", "world");
+});
+
+test('after action', function(){
+  const {store, actions} = createTestStore({
+    setBothWithAction: {
+      type: "SET_BOTH_ACT",
+      after(state){
+        return { foo: "bar" }
+      },
+      action(foo, bar){
+        return { foo, bar }
+      },
+      process(state, payload, type){
+        return Object.assign({}, state, payload)
+      }
+    }
+  });
+
+  let unsubscribe = store.subscribe(() => {
+    expect(store.getState()).toEqual({
+      foo: "hello",
+      bar: "world"
+    });
+    unsubscribe();
+
+    unsubscribe = store.subscribe(() => {
+      expect(store.getState()).toEqual({
+        foo: "bar",
+        bar: "world"
+      });
+      unsubscribe();
+    });
+  });
+
+  actions.setBothWithAction("hello", "world");
 });

@@ -1,15 +1,22 @@
-const {createStore} = require('redux');
+const {createStore, applyMiddleware} = require('redux');
+const thunk = require('redux-thunk').default;
 const processor = require('../lib/multi');
+const { createLogger } = require('redux-logger')
 
 const initialState = {
   foo: "foo",
   bar: "bar"
 }
 
+const middleware = [
+  thunk,
+  // createLogger({colors: false})
+]
+
 const createTestStore = function(setup, setInitialState = true){
   const preducers = processor(setup, setInitialState ? initialState : null);
 
-  const store = createStore(preducers.reducer);
+  const store = createStore(preducers.reducer, applyMiddleware(...middleware));
   return {store, actions: preducers.wrap(store)}
 }
 
@@ -89,12 +96,15 @@ test('named actions dispatch', function(){
     }
   })
 
-  actions.foo.set("hello")
+  const unsubscribe = store.subscribe(() => {
+    expect(store.getState()).toEqual({
+      foo: "hello",
+      bar: "bar"
+    })
+    unsubscribe();
+  });
 
-  expect(store.getState()).toEqual({
-    foo: "hello",
-    bar: "bar"
-  })
+  actions.foo.set("hello")
 })
 
 test('state separation', function(){
@@ -124,10 +134,13 @@ test('state separation', function(){
     bar: "bar"
   })
 
-  actions.foo.set("hello")
+  const unsubscribe = store.subscribe(() => {
+    expect(store.getState()).toEqual({
+      foo: "hello",
+      bar: "bar"
+    })
+    unsubscribe();
+  });
 
-  expect(store.getState()).toEqual({
-    foo: "hello",
-    bar: "bar"
-  })
+  actions.foo.set("hello")
 })
