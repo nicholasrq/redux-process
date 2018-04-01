@@ -108,6 +108,51 @@ test('named actions dispatch with multiple arguments and action creator', functi
   actions.setBothWithAction("hello", "world");
 });
 
+test('named actions dispatch with default processor', function () {
+  const { store, actions } = createTestStore({
+    setBothWithAction: {
+      type: "SET_BOTH_ACT",
+      action(foo, bar) {
+        return { foo, bar }
+      }
+    }
+  });
+
+  const unsubscribe = store.subscribe(() => {
+    expect(store.getState()).toEqual({
+      foo: "hello",
+      bar: "world"
+    });
+    unsubscribe();
+  });
+
+  actions.setBothWithAction("hello", "world");
+});
+
+test('named actions dispatch with auto generated type', function () {
+  const { store, actions } = createTestStore({
+    setBothWithAction: {
+      action(foo, bar) {
+        return { foo, bar }
+      },
+      process(state, payload, type){
+        expect(type).toEqual('SET_BOTH_WITH_ACTION')
+        return Object.assign({}, state, payload)
+      }
+    }
+  });
+
+  const unsubscribe = store.subscribe(() => {
+    expect(store.getState()).toEqual({
+      foo: "hello",
+      bar: "world"
+    });
+    unsubscribe();
+  });
+
+  actions.setBothWithAction("hello", "world");
+});
+
 test('unknown action dispatch', function(){
   const {store, actions} = createTestStore();
 

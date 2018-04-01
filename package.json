@@ -26,12 +26,15 @@
     "url": "https://github.com/nicholasrq/redux-process/issues"
   },
   "homepage": "https://github.com/nicholasrq/redux-processor#readme",
-  "peerDependencies": {
+  "devDependencies": {
+    "jest": "^21.1.0"
+  },
+  "dependencies": {
+    "npm": "^5.7.1"
+  },
+  "optionalDependencies": {
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0"
-  },
-  "devDependencies": {
-    "jest": "^21.1.0"
   }
 }
