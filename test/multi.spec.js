@@ -25,13 +25,13 @@ test('action names provided', function(){
     foo: {
       bar: {
         type: "FOO_BAR",
-        process(state, foo){
+        reduce(state, foo){
           return foo
         }
       },
       baz: {
         type: "FOO_BAZ",
-        process(state, foo){
+        reduce(state, foo){
           return foo
         }
       }
@@ -39,13 +39,13 @@ test('action names provided', function(){
     bar: {
       foo: {
         type: "BAR_FOO",
-        process(state, foo){
+        reduce(state, foo){
           return foo
         }
       },
       baz: {
         type: "BAR_BAZ",
-        process(state, foo){
+        reduce(state, foo){
           return foo
         }
       }
@@ -69,7 +69,7 @@ test('regular actions dispatch', function(){
     foo: {
       set: {
         type: "SET_FOO",
-        process(state, foo){
+        reduce(state, foo){
           return foo
         }
       }
@@ -89,7 +89,7 @@ test('named actions dispatch', function(){
     foo: {
       set: {
         type: "SET_FOO",
-        process(state, foo){
+        reduce(state, foo){
           return foo
         }
       }
@@ -113,7 +113,7 @@ test('state separation', function(){
       state: "foo",
       set: {
         type: "SET_FOO",
-        process(state, foo){
+        reduce(state, foo){
           return foo
         }
       }
@@ -122,7 +122,7 @@ test('state separation', function(){
       state: "bar",
       set: {
         type: "SET_BAR",
-        process(state, foo){
+        reduce(state, foo){
           return foo
         }
       }

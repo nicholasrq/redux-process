@@ -14,7 +14,7 @@ const middleware = [
 ]
 
 const createTestStore = function(setup = {}){
-  const preducers = processor(initialState, setup);
+  const preducers = processor(setup, initialState);
   const store = createStore(preducers.reducer, applyMiddleware(...middleware));
   return {store, actions: preducers.wrap(store)}
 }
@@ -23,7 +23,7 @@ test('regular actions dispatch', function(){
   const {store} = createTestStore({
     setFoo: {
       type: "SET_FOO",
-      process(state, foo){
+      reduce(state, foo){
         return Object.assign({}, state, {foo})
       }
     }
@@ -44,7 +44,7 @@ test('named actions dispatch', function(){
   const {store, actions} = createTestStore({
     setFoo: {
       type: "SET_FOO",
-      process(state, foo){
+      reduce(state, foo){
         return Object.assign({}, state, {foo})
       }
     }
@@ -66,7 +66,7 @@ test('named actions dispatch with multiple arguments', function(){
   const {store, actions} = createTestStore({
     setBoth: {
       type: "SET_BOTH",
-      process(state, payload){
+      reduce(state, payload){
         const [foo, bar] = payload
         return Object.assign({}, state, {foo, bar})
       }
@@ -91,7 +91,7 @@ test('named actions dispatch with multiple arguments and action creator', functi
       action(foo, bar){
         return { foo, bar }
       },
-      process(state, payload){
+      reduce(state, payload){
         return Object.assign({}, state, payload)
       }
     }
@@ -135,7 +135,7 @@ test('named actions dispatch with auto generated type', function () {
       action(foo, bar) {
         return { foo, bar }
       },
-      process(state, payload, type){
+      reduce(state, payload, type){
         expect(type).toEqual('SET_BOTH_WITH_ACTION')
         return Object.assign({}, state, payload)
       }
@@ -177,7 +177,7 @@ test('before action', function(){
       action(foo, bar){
         return { foo, bar }
       },
-      process(state, payload, type){
+      reduce(state, payload, type){
         return Object.assign({}, state, payload)
       }
     }
@@ -212,7 +212,7 @@ test('after action', function(){
       action(foo, bar){
         return { foo, bar }
       },
-      process(state, payload, type){
+      reduce(state, payload, type){
         return Object.assign({}, state, payload)
       }
     }
