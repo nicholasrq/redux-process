@@ -44,23 +44,15 @@ test('named actions content', function(done) {
   const {store, actions} = createTestStore({
     setFoo: {
       type: 'SET_FOO',
-      actions(payload) {
-        expect(actions === this).toEqual(true)
+      action(payload) {
+        expect(actions.isPrototypeOf(this)).toEqual(true)
+        done()
         return payload
       },
       reduce(state, foo) {
         return Object.assign({}, state, {foo})
       },
     },
-  })
-
-  const unsubscribe = store.subscribe(() => {
-    expect(store.getState()).toEqual({
-      foo: 'hello',
-      bar: 'bar',
-    })
-    unsubscribe()
-    done()
   })
 
   return actions.setFoo('hello')
@@ -70,23 +62,15 @@ test('named actions state access', function(done) {
   const {store, actions} = createTestStore({
     setFoo: {
       type: 'SET_FOO',
-      actions(payload) {
+      action(payload) {
         expect(this.state.foo).toEqual('foo')
+        done()
         return payload
       },
       reduce(state, foo) {
         return Object.assign({}, state, {foo})
       },
     },
-  })
-
-  const unsubscribe = store.subscribe(() => {
-    expect(store.getState()).toEqual({
-      foo: 'hello',
-      bar: 'bar',
-    })
-    unsubscribe()
-    done()
   })
 
   return actions.setFoo('hello')
