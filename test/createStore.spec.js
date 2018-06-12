@@ -12,8 +12,9 @@ test('creating store', function(){
     }
   }, {initialState: 'bar'})
 
-  store.actions.setFoo()
-  expect(store.getState()).toEqual('foo')
+  store.actions.setFoo().then(() => {
+    expect(store.getState()).toEqual('foo')
+  })
 })
 
 test('creating store', function(){
@@ -33,6 +34,7 @@ test('creating store', function(){
     }
   })
 
-  store.actions.setFoo()
-  expect(store.getState()).toEqual('foo')
+  store.actions.setFoo().then(() => {
+    expect(store.getState()).toEqual('foo')
+  })
 })
