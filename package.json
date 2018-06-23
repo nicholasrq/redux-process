@@ -27,11 +27,9 @@
   },
   "homepage": "https://github.com/nicholasrq/redux-processor#readme",
   "devDependencies": {
-    "jest": "^21.1.0"
+    "jest": "^23.1.0"
   },
-  "dependencies": {
-    "npm": "^5.7.1"
-  },
+  "dependencies": {},
   "optionalDependencies": {
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
