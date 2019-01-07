@@ -241,7 +241,7 @@ store.setFilter("COMPLETED") //=> Filter: COMPLETED
 
 # Multiple processors
 
-## Basic usge
+## Basic usage
 
 You're might be familiar with redux's `combineReducers` function. Processor has its own alternative with similar functionality. Let's say you have two scopes in your state: `user` and `todos`. To separate reducers for these scopes you can use `multi(setup[, initialState])` function.
 
@@ -339,6 +339,20 @@ actions.todos.add("Second todo");
 ```
 
 In this case you don't need to provide initial state for `processor`, instead you providing state for each state chunk itself.
+
+## Resetting store
+
+Sometimes it might be useful to be able to reset whole redux state completely. For trat purpose `reduxp-processor` offers `resetStore()` method that does exactly what it says. Notice that unlike regular reducers, `resetStore()` lives at the root of `actions` provided by `wrap()` method.
+
+```javascript
+const store = createStore(mpreducers.reducer);
+const actions = mpreducers.wrap(store);
+
+actions.user.setName("Nicholas");
+actions.user.setSurname("Cage");
+
+actions.resetStore()
+```
 
 # Organizing reducers
 
