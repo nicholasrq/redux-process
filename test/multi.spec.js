@@ -15,9 +15,8 @@ const middleware = [
 
 const createTestStore = function(setup, setInitialState = true){
   const preducers = processor(setup, setInitialState ? initialState : null);
-
   const store = createStore(preducers.reducer, applyMiddleware(...middleware));
-  return {store, actions: preducers.wrap(store)}
+  return {store, actions: preducers.wrap(store) }
 }
 
 test('action names provided', function(){
@@ -60,7 +59,8 @@ test('action names provided', function(){
     bar: {
       foo:  expect.any(Function),
       baz:  expect.any(Function)
-    }
+    },
+    resetStore: expect.any(Function)
   })
 })
 
@@ -143,4 +143,42 @@ test('state separation', function(){
   });
 
   actions.foo.set("hello")
+})
+
+test('state reset', function(){
+  const initialState = {
+    foo: {
+      state: {hello: "foo"},
+      set: {
+        type: "SET_FOO",
+        reduce(state, foo){
+          return {hello: foo}
+        }
+      }
+    },
+    bar: {
+      state: {hello: "bar"},
+      set: {
+        type: "SET_BAR",
+        reduce(state, bar){
+          return {hello: bar}
+        }
+      }
+    }
+  }
+  const {store, actions} = createTestStore(initialState, false)
+
+  store.dispatch({ type: "SET_FOO", payload: "world" })
+
+  expect(store.getState()).toEqual({
+    foo: {hello: "world"},
+    bar: {hello: "bar"}
+  })
+
+  actions.resetStore()
+
+  expect(store.getState()).toEqual({
+    foo: {hello: "foo"},
+    bar: {hello: "bar"}
+  })
 })
