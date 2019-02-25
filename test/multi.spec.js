@@ -169,16 +169,40 @@ test('state reset', function(){
   const {store, actions} = createTestStore(initialState, false)
 
   store.dispatch({ type: "SET_FOO", payload: "world" })
-
   expect(store.getState()).toEqual({
     foo: {hello: "world"},
     bar: {hello: "bar"}
   })
 
   actions.resetStore()
-
   expect(store.getState()).toEqual({
     foo: {hello: "foo"},
+    bar: {hello: "bar"}
+  })
+
+  store.dispatch({ type: "SET_FOO", payload: "hello" })
+  store.dispatch({ type: "SET_BAR", payload: "world" })
+  expect(store.getState()).toEqual({
+    foo: {hello: "hello"},
+    bar: {hello: "world"}
+  })
+
+  actions.resetStore({include: ['foo']})
+  expect(store.getState()).toEqual({
+    foo: {hello: "foo"},
+    bar: {hello: "world"}
+  })
+
+  store.dispatch({ type: "SET_FOO", payload: "hello" })
+  store.dispatch({ type: "SET_BAR", payload: "world" })
+  expect(store.getState()).toEqual({
+    foo: {hello: "hello"},
+    bar: {hello: "world"}
+  })
+
+  actions.resetStore({exclude: ['foo']})
+  expect(store.getState()).toEqual({
+    foo: {hello: "hello"},
     bar: {hello: "bar"}
   })
 })
