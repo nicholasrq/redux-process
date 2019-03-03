@@ -54,11 +54,13 @@ test('action names provided', function(){
   expect(actions).toEqual({
     foo: {
       bar:  expect.any(Function),
-      baz:  expect.any(Function)
+      baz:  expect.any(Function),
+      resetStore: expect.any(Function)
     },
     bar: {
       foo:  expect.any(Function),
-      baz:  expect.any(Function)
+      baz:  expect.any(Function),
+      resetStore: expect.any(Function)
     },
     resetStore: expect.any(Function)
   })
@@ -96,15 +98,12 @@ test('named actions dispatch', function(){
     }
   })
 
-  const unsubscribe = store.subscribe(() => {
+  actions.foo.set("hello").then(() => {
     expect(store.getState()).toEqual({
       foo: "hello",
       bar: "bar"
     })
-    unsubscribe();
-  });
-
-  actions.foo.set("hello")
+  })
 })
 
 test('state separation', function(){
@@ -134,15 +133,12 @@ test('state separation', function(){
     bar: "bar"
   })
 
-  const unsubscribe = store.subscribe(() => {
+  actions.foo.set("hello").then(() => {
     expect(store.getState()).toEqual({
       foo: "hello",
       bar: "bar"
     })
-    unsubscribe();
-  });
-
-  actions.foo.set("hello")
+  })
 })
 
 test('state reset', function(){

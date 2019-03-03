@@ -29,15 +29,11 @@ test('regular actions dispatch', function() {
     },
   })
 
-  const unsubscribe = store.subscribe(() => {
-    expect(store.getState()).toEqual({
-      foo: 'hello',
-      bar: 'bar',
-    })
-    unsubscribe()
-  })
-
   store.dispatch({type: 'SET_FOO', payload: 'hello'})
+  expect(store.getState()).toEqual({
+    foo: 'hello',
+    bar: 'bar',
+  })
 })
 
 test('named actions dispatch', function() {
@@ -50,15 +46,12 @@ test('named actions dispatch', function() {
     },
   })
 
-  const unsubscribe = store.subscribe(() => {
+  actions.setFoo('hello').then(() => {
     expect(store.getState()).toEqual({
       foo: 'hello',
       bar: 'bar',
     })
-    unsubscribe()
   })
-
-  actions.setFoo('hello')
 })
 
 test('named actions dispatch with multiple arguments', function() {
@@ -72,15 +65,12 @@ test('named actions dispatch with multiple arguments', function() {
     },
   })
 
-  const unsubscribe = store.subscribe(() => {
+  actions.setBoth('hello', 'world').then(() => {
     expect(store.getState()).toEqual({
       foo: 'hello',
       bar: 'world',
     })
-    unsubscribe()
   })
-
-  actions.setBoth('hello', 'world')
 })
 
 test('named actions dispatch with multiple arguments and action creator', function() {
@@ -96,15 +86,12 @@ test('named actions dispatch with multiple arguments and action creator', functi
     },
   })
 
-  const unsubscribe = store.subscribe(() => {
+  actions.setBothWithAction('hello', 'world').then(() => {
     expect(store.getState()).toEqual({
       foo: 'hello',
       bar: 'world',
     })
-    unsubscribe()
   })
-
-  actions.setBothWithAction('hello', 'world')
 })
 
 test('named actions dispatch with default processor', function() {
@@ -117,15 +104,12 @@ test('named actions dispatch with default processor', function() {
     },
   })
 
-  const unsubscribe = store.subscribe(() => {
+  actions.setBothWithAction('hello', 'world').then(() => {
     expect(store.getState()).toEqual({
       foo: 'hello',
       bar: 'world',
     })
-    unsubscribe()
   })
-
-  actions.setBothWithAction('hello', 'world')
 })
 
 test('named actions dispatch with auto generated type', function() {
@@ -141,27 +125,41 @@ test('named actions dispatch with auto generated type', function() {
     },
   })
 
-  const unsubscribe = store.subscribe(() => {
+  actions.setBothWithAction('hello', 'world').then(() => {
     expect(store.getState()).toEqual({
       foo: 'hello',
       bar: 'world',
     })
-    unsubscribe()
+  })
+})
+
+test('reset store', function() {
+  const {store, actions} = createTestStore({
+    setFoo: {
+      type: 'SET_FOO',
+      reduce(state, foo) {
+        return Object.assign({}, state, {foo})
+      },
+    },
   })
 
-  actions.setBothWithAction('hello', 'world')
+  actions.setFoo('hello').then(() => {
+    expect(store.getState()).toEqual({
+      foo: 'hello',
+      bar: 'bar',
+    })
+
+    actions.resetStore()
+    expect(store.getState()).toEqual(initialState)
+  })
 })
 
 test('unknown action dispatch', function() {
   const {store, actions} = createTestStore()
 
-  const unsubscribe = store.subscribe(() => {
-    expect(store.getState()).toEqual({
-      foo: 'foo',
-      bar: 'bar',
-    })
-    unsubscribe()
-  })
-
   store.dispatch({type: 'UNKNOWN_ACTION', payload: {a: 1, b: 2}})
+  expect(store.getState()).toEqual({
+    foo: 'foo',
+    bar: 'bar',
+  })
 })
